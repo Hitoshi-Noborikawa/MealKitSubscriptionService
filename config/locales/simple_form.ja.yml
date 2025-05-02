@@ -1,0 +1,25 @@
+ja:
+  simple_form:
+    "yes": "はい"
+    "no": "いいえ"
+    required:
+      text: "必須"
+      mark: "*"
+    error_notification:
+      default_message: "入力内容を確認してください。"
+    labels:
+      defaults:
+        email: "メールアドレス"
+        name: "名前"
+        password: "パスワード"
+        remember_me: "次回から自動的にログイン"
+      teacher:
+        name: "講師名"
+        avatar: "プロフィール画像"
+        languages: "教えられる言語"
+        self_introduction: "自己PR"
+      lesson:
+        start_on: "日付"
+        start_hour: "開始時間"
+        language: "教える言語"
+        zoom_url: "当日使用するzoomのurl"
