@@ -33,8 +33,11 @@ ja:
         unconfirmed_email: 未確認Eメール
         unlock_token: ロック解除用トークン
         updated_at: 更新日
-        profile: プロフィール
-        blog_url: ブログURL
+        address: 住所
+        prefecture: 都道府県
+        shipping_zone: 配送ゾーン
+        phone_number: 電話番号
+        allergy_notes: アレルギー備考欄
       meal_set:
         name: セット名
         price: 価格
@@ -42,6 +45,9 @@ ja:
         weight: 重量
         refrigerated: 冷凍
         allergy_info: アレルギー備考欄
+      subscription:
+        frequency: 配送頻度
+        plan_id: プラン
   errors:
     format: "%{attribute}%{message}"
     messages:

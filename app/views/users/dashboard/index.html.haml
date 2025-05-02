@@ -1,15 +1,4 @@
 .container.mt-5
-
-  -# - if @next_delivery
-  -#   .card.mb-4
-  -#     .card-body
-  -#       %h5.card-title 次回配送予定
-  -#       %p.card-text.text-lg= @next_delivery.delivery_date
-  -#       %p.card-text= @next_delivery.time_slot == 'am' ? '午前' : '午後'
-  -#       = link_to '変更する', edit_users_delivery_path(@next_delivery), class: 'btn btn-primary'
-  -# - else
-  -#   %p.text-muted 次回配送予定はありません
-
   %h2.mb-3 直近の配送履歴
 
   %table.table.table-striped
@@ -19,12 +8,9 @@
         %th 時間帯
         %th ステータス
     %tbody
-      -# - @deliveries.each do |d|
-      -#   %tr
-      -#     %td= d.delivery_date
-      -#     %td= d.time_slot == 'am' ? '午前' : '午後'
-      -#     %td= d.status == 'preparing' ? '準備中' : '配送済み'
-
-  .mt-4.d-flex.justify-content-end
-    -# = link_to 'プラン変更', new_users_subscription_path, class: 'btn btn-secondary me-2'
-    -# = link_to '配送停止リクエスト', new_users_contact_path, class: 'btn btn-secondary'
+      - if (subscription = current_user.subscription).present?
+        - subscription.deliveries.default_order.each do |d|
+          %tr
+            %td= d.delivery_date
+            %td= d.time_slot == 'am' ? '午前' : '午後'
+            %td= d.status == 'preparing' ? '準備中' : '配送済み'

@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get "up" => "rails/health#show", as: :rails_health_check
+  get 'up' => 'rails/health#show', as: :rails_health_check
 
   devise_for :admins, controllers: {
     sessions: 'admins/sessions',
@@ -19,5 +19,8 @@ Rails.application.routes.draw do
 
   namespace :users do
     root to: 'dashboard#index'
+    resource  :subscription, only: %i[new create edit update]
+    resources :deliveries, only: %i[index show edit update]
+    resource :account, only: %i[edit update]
   end
 end

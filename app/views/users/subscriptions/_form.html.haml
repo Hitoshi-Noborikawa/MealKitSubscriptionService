@@ -1,0 +1,26 @@
+.fs-3.mb-3
+  プラン設定
+= f.input :plan_id,
+  collection: Plan.all.map { |p| ["#{p.name}（¥#{p.price}）", p.id] },
+  as: :radio_buttons
+
+= f.input :frequency, as: :radio_buttons
+
+.fs-3.mb-3
+  配送情報
+= f.simple_fields_for :deliveries do |ff|
+  = ff.input :meal_set_id,
+    label: '食材セット',
+    collection: MealSet.all.map { |m| [m.name, m.id] },
+    as: :radio_buttons,
+    required: true
+  = ff.input :delivery_date,
+    label: '配送日',
+    as: :string,
+    input_html: { type: 'date', class: 'form-control', min: (Date.current + 3.days).to_s }
+  = ff.input :time_slot,
+    label: '時間帯',
+    as: :radio_buttons
+
+.mt-4.d-flex.justify-content-end
+  = f.button :submit, class: 'btn btn-primary'
