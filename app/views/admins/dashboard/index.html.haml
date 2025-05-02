@@ -1,0 +1,23 @@
+%div.container.mt-4
+  %h1.mb-4 管理者ダッシュボード
+
+  .row.mb-4
+    .col-md-4
+      .card.text-center
+        .card-body
+          %h5.card-title 本日の配達件数
+          %p.card-text.lead #{@today_count} 件
+    .col-md-4
+      .card.text-center
+        .card-body
+          %h5.card-title 今週の配達件数
+          %p.card-text.lead #{@week_count} 件
+    .col-md-4
+      .card.text-center
+        .card-body
+          %h5.card-title 未対応停止リクエスト数
+          %p.card-text.lead #{@pending_stops} 件
+
+  %nav.mb-4
+    %ul.nav.nav-pills.justify-content-center
+      %li.nav-item

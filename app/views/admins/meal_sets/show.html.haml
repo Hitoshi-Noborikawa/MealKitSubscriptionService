@@ -1,0 +1,29 @@
+.container.mt-4
+  %h1.mb-4 食材セット詳細
+
+  %dl.row
+    %dt.col-sm-3 セット名
+    %dd.col-sm-9= @meal_set.name
+
+    %dt.col-sm-3 価格（税抜）
+    %dd.col-sm-9= number_to_currency(@meal_set.price, unit: '¥', precision: 0)
+
+    %dt.col-sm-3 同梱アイテム
+    %dd.col-sm-9= simple_format(@meal_set.included_items)
+
+    %dt.col-sm-3 重量(kg)
+    %dd.col-sm-9= @meal_set.weight
+
+    %dt.col-sm-3 冷蔵品
+    %dd.col-sm-9= @meal_set.refrigerated? ? 'あり' : 'なし'
+
+    %dt.col-sm-3 アレルギー情報
+    %dd.col-sm-9= simple_format(@meal_set.allergy_info)
+
+    %dt.col-sm-3 レシピPDF
+    %dd.col-sm-9
+
+  .mt-4.d-flex.justify-content-end
+    = link_to '編集',
+              edit_admins_meal_set_path(@meal_set),
+              class: 'btn btn-primary me-2'

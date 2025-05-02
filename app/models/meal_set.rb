@@ -1,0 +1,2 @@
+class MealSet < ApplicationRecord
+end

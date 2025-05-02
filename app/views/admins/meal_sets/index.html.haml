@@ -1,0 +1,26 @@
+.container.mt-4
+  %h1.mb-4 食材セット一覧
+
+  = link_to '食材登録', new_admins_meal_set_path, class: 'btn btn-primary mb-3'
+
+  %table.table.table-striped
+    %thead
+      %tr
+        %th セット名
+        %th 価格（税抜）
+        %th 重量(kg)
+        %th 冷蔵品
+        %th アクション
+    %tbody
+      - @meal_sets.each do |meal_set|
+        %tr
+          %td= meal_set.name
+          %td= number_to_currency(meal_set.price, unit: '¥', precision: 0)
+          %td= meal_set.weight
+          %td= meal_set.refrigerated? ? 'あり' : 'なし'
+          %td.d-flex.gap-2
+            = link_to '詳細', admins_meal_set_path(meal_set), class: 'btn btn-sm'
+            = link_to '編集', edit_admins_meal_set_path(meal_set), class: 'btn btn-sm'
+            = link_to '削除', admins_meal_set_path(meal_set), method: :delete, data: { confirm: '本当に削除しますか？' }, class: 'btn btn-sm btn-danger'
+
+  = link_to 'ダッシュボードに戻る', admins_root_path, class: 'btn btn-secondary mt-4'

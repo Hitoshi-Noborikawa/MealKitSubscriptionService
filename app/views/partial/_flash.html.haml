@@ -1,0 +1,8 @@
+- flash.each do |key, value|
+  - case key
+  - when 'notice'
+    .alert.alert-success{ role: 'alert' }
+      = value
+  - when 'alert'
+    .alert.alert-danger{ role: 'alert' }
+      = value

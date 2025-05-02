@@ -1,19 +1,21 @@
 source 'https://rubygems.org'
 
+gem 'rails', '~> 8.0.2'
+
 gem 'bootsnap', require: false
 gem 'cssbundling-rails'
 gem 'devise'
+gem 'haml-rails'
 gem 'jbuilder'
 gem 'jsbundling-rails'
 gem 'kamal', require: false
 gem 'pg'
 gem 'propshaft'
 gem 'puma'
-gem 'rails', '~> 8.0.2'
+gem 'simple_form'
 gem 'solid_cable'
 gem 'solid_cache'
 gem 'solid_queue'
-gem 'simple_form'
 gem 'stimulus-rails'
 gem 'thruster', require: false
 gem 'turbo-rails'

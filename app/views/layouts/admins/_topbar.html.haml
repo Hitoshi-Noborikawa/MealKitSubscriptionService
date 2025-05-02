@@ -1,0 +1,10 @@
+%nav.bg-secondary.navbar.navbar-expand-lg.p-4{ data: { bs_theme: 'dark' } }
+  .container-fluid
+    = link_to '定期食材配信サービス', admins_root_path, class: 'navbar-brand'
+    .d-flex.justify-content-between.w-100
+      %ul.navbar-nav
+        %li.nav-item
+          = link_to '食材一覧', admins_meal_sets_path, class: 'nav-link'
+      %ul.navbar-nav
+        %li.nav-item
+          = button_to 'ログアウト', destroy_admin_session_path, method: :delete, class: 'nav-link'
