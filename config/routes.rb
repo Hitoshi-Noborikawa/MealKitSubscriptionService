@@ -5,8 +5,19 @@ Rails.application.routes.draw do
     sessions: 'admins/sessions',
   }
 
+  devise_for :users, controllers: {
+    registrations: 'users/registrations',
+    sessions: 'users/sessions',
+  }
+
+  root to: 'users/dashboard#index'
+
   namespace :admins do
     root to: 'dashboard#index'
     resources :meal_sets
+  end
+
+  namespace :users do
+    root to: 'dashboard#index'
   end
 end

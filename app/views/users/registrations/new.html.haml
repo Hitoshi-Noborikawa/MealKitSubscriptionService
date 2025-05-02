@@ -1,0 +1,21 @@
+.p-5
+  .container
+    %h2 利用者新規登録
+    = simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+      .form-inputs
+        = f.input :name,
+                  required: true,
+                  autofocus: true,
+                  input_html: { autocomplete: 'name' }
+        = f.input :email,
+                  required: true,
+                  input_html: { autocomplete: 'email' }
+        = f.input :password,
+                  required: true,
+                  input_html: { autocomplete: 'current-password' }
+        = f.input :password_confirmation,
+                  required: true,
+                  input_html: { autocomplete: 'new-password' }
+      .d-flex.justify-content-end
+        = f.button :submit, class: 'btn-primary'
+      = render 'users/shared/links'
