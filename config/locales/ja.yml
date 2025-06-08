@@ -48,6 +48,13 @@ ja:
       subscription:
         frequency: 配送頻度
         plan_id: プラン
+  enumerize:
+    frequency:
+      weekly: 週1
+      twice_a_month: 月2
+    time_slot:
+      am: 午前
+      pm: 午後
   errors:
     format: "%{attribute}%{message}"
     messages:

@@ -1,6 +1,6 @@
 .container.mt-4
   %h1.mb-4 食材セット登録
-  = simple_form_for @meal_set, url: admins_meal_sets_path, html: { class: 'needs-validation' } do |f|
+  = simple_form_for @meal_set, url: admins_meal_sets_path do |f|
     = render 'form', f: f, meal_set: @meal_set
     .mt-4.d-flex.justify-content-end
       = f.button :submit, '更新する', class: 'btn btn-primary'
