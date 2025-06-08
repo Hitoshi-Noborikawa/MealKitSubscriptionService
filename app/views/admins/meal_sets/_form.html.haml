@@ -1,14 +1,15 @@
 = f.input :name,
           autofocus: true,
           required: true
-= f.input :price,
+= f.input :description,
           required: true
-= f.input :included_items,
-          as: :text
-= f.input :weight,
-          required: true
-= f.input :refrigerated,
-          required: true,
-          as: :boolean
-= f.input :allergy_info,
-          as: :text
+
+%h3 品目
+-# TODO: 品目を追加・削除できるように
+= f.simple_fields_for :meal_set_items do |ff|
+  .item-row
+    = ff.input :meal_id,
+               collection: Meal.default_order,
+               prompt: '食材を選択',
+               label: '食材'
+    = ff.input :quantity

@@ -4,4 +4,4 @@
     = render 'form', f: f, meal_set: @meal_set
     .mt-4.d-flex.justify-content-end
       = f.button :submit, '更新する', class: 'btn btn-primary'
-  = link_to '一覧に戻る', admins_root_path, class: 'btn btn-secondary mt-3'
+  = link_to '一覧に戻る', admins_meal_sets_path(@meal_set), class: 'btn btn-secondary mt-3'

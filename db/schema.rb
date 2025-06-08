@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_02_053616) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_08_063221) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -53,7 +53,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_02_053616) do
 
   create_table "deliveries", force: :cascade do |t|
     t.bigint "subscription_id", null: false
-    t.bigint "meal_set_id", null: false
     t.date "delivery_date", null: false
     t.integer "time_slot", default: 0, null: false
     t.integer "status", default: 0, null: false
@@ -62,17 +61,29 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_02_053616) do
     t.integer "total_price_with_tax", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["meal_set_id"], name: "index_deliveries_on_meal_set_id"
     t.index ["subscription_id"], name: "index_deliveries_on_subscription_id"
+  end
+
+  create_table "meal_set_items", force: :cascade do |t|
+    t.bigint "meal_set_id", null: false
+    t.bigint "meal_id", null: false
+    t.integer "quantity", default: 1, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["meal_id"], name: "index_meal_set_items_on_meal_id"
+    t.index ["meal_set_id"], name: "index_meal_set_items_on_meal_set_id"
   end
 
   create_table "meal_sets", force: :cascade do |t|
     t.string "name", null: false
-    t.integer "price", null: false
-    t.text "included_items", null: false
-    t.float "weight", null: false
-    t.boolean "refrigerated", null: false
-    t.text "allergy_info", default: "", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "description", default: ""
+  end
+
+  create_table "meals", force: :cascade do |t|
+    t.string "name", null: false
+    t.boolean "refrigeration", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -119,8 +130,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_02_053616) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "deliveries", "meal_sets"
   add_foreign_key "deliveries", "subscriptions"
+  add_foreign_key "meal_set_items", "meal_sets"
+  add_foreign_key "meal_set_items", "meals"
   add_foreign_key "subscriptions", "plans"
   add_foreign_key "subscriptions", "users"
 end
