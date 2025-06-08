@@ -46,9 +46,6 @@ erDiagram
         int address_id FK
         int frequency
         date start_date
-        date next_delivery_date
-        int time_slot "morning afternoon"
-        int status "waiting shipped received"
     }
     subscription_meal_sets {
         int id PK
@@ -65,7 +62,7 @@ erDiagram
         int frozen_fee
         int cod_fee "代金引換手数料"
         int total_price
-        int status
+        int status "waiting shipped received"
     }
     admins {
         int id PK
