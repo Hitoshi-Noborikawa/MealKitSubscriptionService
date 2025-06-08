@@ -38,13 +38,14 @@ ja:
         shipping_zone: 配送ゾーン
         phone_number: 電話番号
         allergy_notes: アレルギー備考欄
+      meal:
+        name: 食材名
+        refrigeration: 冷蔵
       meal_set:
         name: セット名
-        price: 価格
-        included_items: 同封物
-        weight: 重量
-        refrigerated: 冷凍
-        allergy_info: アレルギー備考欄
+        description: 説明
+      meal_set_item:
+        quantity: 個数
       subscription:
         frequency: 配送頻度
         plan_id: プラン

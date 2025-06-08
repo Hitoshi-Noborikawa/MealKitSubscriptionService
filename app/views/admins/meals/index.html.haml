@@ -1,0 +1,23 @@
+.container.mt-4
+  %h1.mb-4 食材一覧
+
+  .mb-3
+    = link_to '食材登録', new_admins_meal_path, class: 'btn btn-primary'
+    = link_to '食材セット一覧', admins_meal_sets_path, class: 'btn btn-link'
+
+  %table.table
+    %thead
+      %tr
+        %th ID
+        %th 名前
+        %th 凍結品
+        %th
+    %tbody
+      - @meals.each do |meal|
+        %tr
+          %td= meal.id
+          %td= meal.name
+          %td= meal.refrigeration? ? 'はい' : 'いいえ'
+          %td
+            = link_to '編集', edit_admins_meal_path(meal), class: 'btn btn-secondary btn-sm'
+            = link_to '削除', admins_meal_path(meal), method: :delete, data: { confirm: '本当に削除しますか？' }, class: 'btn btn-danger btn-sm'
