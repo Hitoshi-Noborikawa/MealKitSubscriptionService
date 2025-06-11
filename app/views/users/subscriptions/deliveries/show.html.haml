@@ -1,0 +1,47 @@
+.container.mt-4
+  .card.shadow-sm
+    .card-header.bg-light
+      %h2.mb-0 配送詳細
+
+    .card-body
+      %dl.row.mb-4
+        %dt.col-sm-3.text-muted 配送日
+        %dd.col-sm-9= l(@delivery.delivery_date, format: :long)
+
+        %dt.col-sm-3.text-muted 時間帯
+        %dd.col-sm-9= @delivery.time_slot
+
+        %dt.col-sm-3.text-muted 配送先
+        %dd.col-sm-9= @delivery.address.full_address
+
+        %dt.col-sm-3.text-muted 状態
+        %dd.col-sm-9
+          %span.badge.bg-info= @delivery.status.humanize
+
+      %h5.mt-4.mb-3 料金
+      %table.table.table-sm.w-auto
+        %tbody
+          %tr
+            %th 送料
+            %td.text-end= number_with_delimiter(@delivery.shipping_fee) + " 円"
+          %tr
+            %th 冷凍手数料
+            %td.text-end= number_with_delimiter(@delivery.frozen_fee) + " 円"
+          %tr
+            %th 代引手数料
+            %td.text-end= number_with_delimiter(@delivery.cod_fee) + " 円"
+          %tr
+            %th スケジュール手数料
+            %td.text-end= number_with_delimiter(@delivery.schedule_fee) + " 円"
+          %tr.fw-bold
+            %th 合計
+            %td.text-end= number_with_delimiter(@delivery.total_price) + " 円"
+
+      %h5.mt-4.mb-2 食材セット
+      %ul.list-inline
+        - @delivery.meal_sets.each do |meal_set|
+          %li.list-inline-item
+            %span.badge.bg-success.fw-normal= meal_set.name
+
+      .mt-4
+        = link_to '一覧に戻る', users_root_path, class: 'btn btn-secondary'

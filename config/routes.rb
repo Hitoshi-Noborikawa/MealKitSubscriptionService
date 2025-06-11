@@ -14,16 +14,19 @@ Rails.application.routes.draw do
 
   namespace :admins do
     # TODO: root書くんだったら resourceも書きたい
-    root to: 'dashboard#index'
+    root to: 'deliveries#index'
     resources :meals, only: %i[index new edit create update destroy]
     resources :meal_sets, only: %i[index new edit create update destroy]
+    resources :deliveries, only: %i[index show update]
   end
 
   namespace :users do
     # TODO: root書くんだったら resourceも書きたい
     root to: 'dashboard#index'
-    resource  :subscription, only: %i[new create edit update]
-    resources :deliveries, only: %i[index show edit update]
+    resources :addresses, only: %i[index new edit create update destroy]
+    resource :subscription, only: %i[show new edit create update] do
+      resources :deliveries, only: %i[index show new edit create update], module: :subscriptions
+    end
     resource :account, only: %i[edit update]
   end
 end

@@ -1,0 +1,7 @@
+.container.mt-4
+  .card.shadow-sm
+    .card-header.bg-light
+      %h2.mb-0 新規配送作成
+    .card-body
+      = render 'form', subscription: @subscription, delivery: @delivery
+      = link_to '一覧に戻る', users_root_path, class: 'btn btn-link'

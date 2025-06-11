@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   has_one :subscription, dependent: :destroy
+  has_many :addresses, dependent: :destroy
 
   enumerize :shipping_zone, in: { hokkaido_okinawa: 0, others: 1 }, default: :others, predicates: true
 end

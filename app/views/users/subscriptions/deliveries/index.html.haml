@@ -1,0 +1,19 @@
+%h1 配送一覧
+= link_to '新規配送作成', new_users_subscription_delivery_path, class: 'btn btn-primary mb-3'
+%table.table
+  %thead
+    %tr
+      %th ID
+      %th 配送日
+      %th 時間帯
+      %th 状態
+      %th 操作
+  %tbody
+    - @deliveries.each do |delivery|
+      %tr
+        %td= delivery.id
+        %td= delivery.delivery_date
+        %td= delivery.time_slot
+        %td= delivery.status
+        %td
+          = link_to '詳細', users_subscription_delivery_path(delivery), class: 'btn btn-sm btn-info'
