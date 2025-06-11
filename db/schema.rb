@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_08_063221) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_11_132025) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,6 +42,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_08_063221) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "addresses", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "postal_code", null: false
+    t.string "prefecture", null: false
+    t.string "city", null: false
+    t.string "street", null: false
+    t.string "phone_number", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_addresses_on_user_id"
+  end
+
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -61,7 +73,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_08_063221) do
     t.integer "total_price_with_tax", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "address_id", null: false
+    t.integer "shipping_fee", default: 0, null: false
+    t.integer "frozen_fee", default: 0, null: false
+    t.integer "cod_fee", default: 0, null: false
+    t.integer "schedule_fee", default: 0, null: false
+    t.index ["address_id"], name: "index_deliveries_on_address_id"
     t.index ["subscription_id"], name: "index_deliveries_on_subscription_id"
+  end
+
+  create_table "delivery_meal_sets", force: :cascade do |t|
+    t.bigint "delivery_id", null: false
+    t.bigint "meal_set_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "quantity", default: 1, null: false
+    t.index ["delivery_id", "meal_set_id"], name: "index_delivery_meal_sets_on_delivery_id_and_meal_set_id", unique: true
+    t.index ["delivery_id"], name: "index_delivery_meal_sets_on_delivery_id"
+    t.index ["meal_set_id"], name: "index_delivery_meal_sets_on_meal_set_id"
   end
 
   create_table "meal_set_items", force: :cascade do |t|
@@ -117,20 +146,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_08_063221) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "address", default: "", null: false
-    t.string "prefecture", default: "", null: false
-    t.integer "shipping_zone", default: 1, null: false
     t.string "phone_number", default: "", null: false
     t.text "allergy_notes", default: "", null: false
     t.boolean "suspended", default: false, null: false
-    t.integer "deliveries_count", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "addresses", "users"
+  add_foreign_key "deliveries", "addresses"
   add_foreign_key "deliveries", "subscriptions"
+  add_foreign_key "delivery_meal_sets", "deliveries"
+  add_foreign_key "delivery_meal_sets", "meal_sets"
   add_foreign_key "meal_set_items", "meal_sets"
   add_foreign_key "meal_set_items", "meals"
   add_foreign_key "subscriptions", "plans"
