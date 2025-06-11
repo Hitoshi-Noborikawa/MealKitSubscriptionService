@@ -1,7 +1,17 @@
 = simple_form_for [:users, address] do |f|
-  = f.input :postal_code,   label: '郵便番号',  required: true
-  = f.input :prefecture,    label: '都道府県', required: true
-  = f.input :city,          label: '市区町村', required: true
-  = f.input :street,        label: '番地',     required: true
-  = f.input :phone_number,  label: '電話番号', required: true
-  = f.button :submit, '保存'
+  .row.mb-3
+    .col-md-6
+      = f.input :postal_code, label: '郵便番号', required: true, input_html: { class: 'form-control' }
+    .col-md-6
+      = f.input :phone_number, label: '電話番号', required: true, input_html: { class: 'form-control' }
+
+  .row.mb-3
+    .col-md-4
+      = f.input :prefecture, label: '都道府県', required: true, input_html: { class: 'form-control' }
+    .col-md-4
+      = f.input :city, label: '市区町村', required: true, input_html: { class: 'form-control' }
+    .col-md-4
+      = f.input :street, label: '番地', required: true, input_html: { class: 'form-control' }
+
+  .d-flex.justify-content-end.mt-4
+    = f.button :submit, '保存', class: 'btn btn-primary px-4 py-2'

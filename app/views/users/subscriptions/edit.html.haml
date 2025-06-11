@@ -1,5 +1,10 @@
 .container.mt-4
-  %h1.mb-4 配送設定
-  = simple_form_for @subscription, url: users_subscription_path do |f|
-    = render 'form', f: f, subscription: @subscription
+  .card.shadow-sm
+    .card-header.bg-light
+      %h2.mb-0 配送設定
+
+    .card-body
+      = simple_form_for @subscription, url: users_subscription_path do |f|
+        = render 'form', f: f, subscription: @subscription
+
   = link_to '一覧に戻る', users_root_path, class: 'btn btn-secondary mt-3'

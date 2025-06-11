@@ -1,0 +1,29 @@
+%h2 配送一覧
+%table.table.table-hover
+  %thead
+    %tr
+      %th ID
+      %th 配送日
+      %th 食材セット
+      %th 状態
+      %th 操作
+  %tbody
+    - @deliveries.each do |d|
+      %tr
+        %td= d.id
+        %td= d.delivery_date
+        %td
+          - d.meal_sets.each do |ms|
+            = ms.name
+            = tag(:br)
+        %td
+          = d.status
+        %td
+          = simple_form_for d, url: admins_delivery_path(d), method: :patch, local: true do |f|
+            .d-flex.align-items-center
+              = f.input :status,
+                        as: :select,
+                        collection: Delivery.status.options,
+                        label: false,
+                        input_html: { class: 'form-select form-select-sm me-2' }
+              = f.button :submit, '変更', class: 'btn btn-primary btn-sm'

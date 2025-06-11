@@ -1,23 +1,51 @@
 = simple_form_for [:users, subscription, delivery] do |f|
-  -# TODO: as: :stringとか必要？
-  = f.input :delivery_date, as: :string, input_html: { type: 'date', value: Date.current }, label: '配送日'
-  = f.input :time_slot, as: :radio_buttons, collection: Delivery.time_slot.options, label: '時間帯'
-  = f.input :address_id, collection: current_user.addresses, label_method: :full_address, value_method: :id, prompt: '配送先を選択', label: '配送先'
+  .row.mb-3
+    .col-md-6
+      = f.input :delivery_date,
+        as: :string,
+        input_html: { type: 'date', value: Date.current, class: 'form-control' },
+        label: '配送日'
+    .col-md-6
+      = f.input :time_slot,
+        as: :radio_buttons,
+        collection: Delivery.time_slot.options,
+        label: '時間帯',
+        item_wrapper_class: 'form-check mb-2',
+        input_html: { class: 'form-check-input' },
+        label_html: { class: 'form-check-label' },
+        wrapper: false
 
-  %h3 食材セットを選択（最大 #{subscription.plan.meal_sets_count} 個）
-  = f.simple_fields_for :delivery_meal_sets do |ff|
-    .item-row
-      = ff.input :meal_set_id,
-                 collection: MealSet.all,
-                 prompt: 'セットを選択',
-                 label: '食材セット'
-      = ff.input :quantity,
-                 label: '個数',
-                 input_html: { min: 1, max: subscription.plan.meal_sets_count }
-      -# TODO: 必要
-      -# = ff.input :_destroy, as: :boolean, label: '削除'
-  %div
-    -# TODO: 必要
-    -# = link_to_add_fields '行を追加', f, :delivery_meal_sets
+  .mb-3
+    = f.input :address_id,
+        collection: current_user.addresses,
+        label_method: :full_address,
+        value_method: :id,
+        prompt: '配送先を選択',
+        label: '配送先',
+        input_html: { class: 'form-select' }
 
-  = f.button :submit, '確定'
+  .border-top.pt-4.mt-4
+    %h5.mb-3.text-primary
+      %i.bi.bi-basket.me-2
+      食材セットを選択（最大 #{subscription.plan.meal_sets_count} 個）
+
+    = f.simple_fields_for :delivery_meal_sets do |ff|
+      .row.mb-2.align-items-end
+        .col-md-8
+          = ff.input :meal_set_id,
+            collection: MealSet.all,
+            prompt: 'セットを選択',
+            label: false,
+            input_html: { class: 'form-select' }
+        .col-md-3
+          = ff.input :quantity,
+            label: '個数',
+            input_html: { min: 1, max: subscription.plan.meal_sets_count, class: 'form-control' }
+        .col-md-1
+          -# = ff.input :_destroy, as: :boolean, label: '削除'
+
+    .d-flex.justify-content-end.mb-2
+      -# = link_to_add_fields '行を追加', f, :delivery_meal_sets, class: 'btn btn-outline-secondary btn-sm'
+
+  .d-flex.justify-content-end.mt-4
+    = f.button :submit, '確定', class: 'btn btn-primary px-4 py-2'

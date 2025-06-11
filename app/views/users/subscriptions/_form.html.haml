@@ -1,9 +1,27 @@
-.fs-3.mb-3
+.fs-5.mb-3.text-primary
+  %i.bi.bi-truck.me-2
   プラン設定
-= f.input :plan_id,
-  collection: Plan.all.map { |p| ["#{p.name}（¥#{p.price}）", p.id] },
-  as: :radio_buttons
 
-= f.input :frequency, as: :radio_buttons
+.row.mb-4
+  .col-md-6
+    %label.fw-bold.mb-2 プランを選択してください
+    = f.input :plan_id,
+        collection: Plan.all.map { |p| ["#{p.name}（¥#{p.price}）", p.id] },
+        as: :radio_buttons,
+        item_wrapper_class: 'form-check mb-2',
+        input_html: { class: 'form-check-input' },
+        label_html: { class: 'form-check-label' },
+        wrapper: false,
+        label: false
+  .col-md-6
+    %label.fw-bold.mb-2 配送頻度を選択してください
+    = f.input :frequency,
+        as: :radio_buttons,
+        collection: Subscription.frequency.options,
+        item_wrapper_class: 'form-check mb-2',
+        input_html: { class: 'form-check-input' },
+        label_html: { class: 'form-check-label' },
+        wrapper: false
+
 .mt-4.d-flex.justify-content-end
-  = f.button :submit, class: 'btn btn-primary'
+  = f.button :submit, class: 'btn btn-primary px-4 py-2'

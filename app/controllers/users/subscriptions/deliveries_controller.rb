@@ -40,7 +40,7 @@ class Users::Subscriptions::DeliveriesController < Users::Subscriptions::Applica
   private
 
   def set_delivery
-    @delivery = current_user.deliveries.find(params[:id])
+    @delivery = current_user.subscription.deliveries.find(params[:id])
   end
 
   def delivery_params
