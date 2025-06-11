@@ -1,0 +1,23 @@
+= simple_form_for [:users, subscription, delivery] do |f|
+  -# TODO: as: :stringとか必要？
+  = f.input :delivery_date, as: :string, input_html: { type: 'date', value: Date.current }, label: '配送日'
+  = f.input :time_slot, as: :radio_buttons, collection: Delivery.time_slot.options, label: '時間帯'
+  = f.input :address_id, collection: current_user.addresses, label_method: :full_address, value_method: :id, prompt: '配送先を選択', label: '配送先'
+
+  %h3 食材セットを選択（最大 #{subscription.plan.meal_sets_count} 個）
+  = f.simple_fields_for :delivery_meal_sets do |ff|
+    .item-row
+      = ff.input :meal_set_id,
+                 collection: MealSet.all,
+                 prompt: 'セットを選択',
+                 label: '食材セット'
+      = ff.input :quantity,
+                 label: '個数',
+                 input_html: { min: 1, max: subscription.plan.meal_sets_count }
+      -# TODO: 必要
+      -# = ff.input :_destroy, as: :boolean, label: '削除'
+  %div
+    -# TODO: 必要
+    -# = link_to_add_fields '行を追加', f, :delivery_meal_sets
+
+  = f.button :submit, '確定'

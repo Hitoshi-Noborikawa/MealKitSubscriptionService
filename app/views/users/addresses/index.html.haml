@@ -1,0 +1,22 @@
+%h1 住所一覧
+= link_to '新規住所追加', new_users_address_path, class: 'btn btn-primary'
+%table.table
+  %thead
+    %tr
+      %th 郵便番号
+      %th 都道府県
+      %th 市区町村
+      %th 番地
+      %th 電話番号
+      %th 操作
+  %tbody
+    - @addresses.each do |address|
+      %tr
+        %td= address.postal_code
+        %td= address.prefecture
+        %td= address.city
+        %td= address.street
+        %td= address.phone_number
+        %td
+          = link_to '編集', edit_users_address_path(address), class: 'btn btn-sm btn-secondary'
+          = link_to '削除', users_address_path(address), method: :delete, data: { confirm: '本当に削除しますか？' }, class: 'btn btn-sm btn-danger'

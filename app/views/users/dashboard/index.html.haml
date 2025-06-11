@@ -1,16 +1,34 @@
 .container.mt-5
-  %h2.mb-3 直近の配送履歴
+  - if @subscription
+    %p
+      現在のプラン：
+      = @subscription.plan.name
+      頻度
+      = @subscription.frequency_text
+    = link_to '新しい配送注文を作成する', new_users_subscription_delivery_path, class: 'btn btn-primary mb-3'
 
-  %table.table.table-striped
-    %thead
-      %tr
-        %th 配送日
-        %th 時間帯
-        %th ステータス
-    %tbody
-      - if (subscription = current_user.subscription).present?
-        - subscription.deliveries.default_order.each do |d|
+    - if @deliveries.any?
+      %h2 配送状況一覧
+      %table.table
+        %thead
           %tr
-            %td= d.delivery_date
-            %td= d.time_slot == 'am' ? '午前' : '午後'
-            %td= d.status == 'preparing' ? '準備中' : '配送済み'
+            %th 配送日
+            %th 食材セット
+            %th 個数
+            %th 状態
+        %tbody
+          - @deliveries.each do |d|
+            %tr
+              %td= d.delivery_date
+              %td
+                - d.meal_sets.each do |ms|
+                  = ms.name
+                  = tag(:br)
+              %td
+                = d.delivery_meal_sets.map(&:quantity).sum
+              %td= d.status
+    - else
+      %p まだ配送注文がありません。
+  - else
+    %p プランが設定されていません。
+    = link_to 'プランを選択する', new_users_subscription_path, class: 'btn btn-primary'

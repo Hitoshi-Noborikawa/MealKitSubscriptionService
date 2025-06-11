@@ -1,0 +1,28 @@
+%h1 配送詳細
+%dl
+  %dt ID
+  %dd= @delivery.id
+  %dt 配送日
+  %dd= @delivery.delivery_date
+  %dt 時間帯
+  %dd= @delivery.time_slot_i18n
+  %dt 配送先
+  %dd= @delivery.address.full_address
+  %dt 料金
+  %dd
+    %ul
+      %li 送料: ¥\#{ @delivery.shipping_fee }
+      %li 冷凍手数料: ¥\#{ @delivery.frozen_fee }
+      %li 代引手数料: ¥\#{ @delivery.cod_fee }
+      %li スケジュール手数料: ¥\#{ @delivery.schedule_fee }
+      %li 合計: ¥\#{ @delivery.total_price }
+  %dt 状態
+  %dd= @delivery.status_i18n
+
+%h2 食材セット
+%ul
+  - @delivery.meal_sets.each do |meal_set|
+    %li= meal_set.name
+
+= link_to '編集', edit_users_subscription_delivery_path(@delivery), class: 'btn btn-secondary'
+= link_to '一覧に戻る', users_subscription_deliveries_path, class: 'btn btn-link'

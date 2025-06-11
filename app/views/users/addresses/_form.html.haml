@@ -1,0 +1,7 @@
+= simple_form_for [:users, address] do |f|
+  = f.input :postal_code,   label: '郵便番号',  required: true
+  = f.input :prefecture,    label: '都道府県', required: true
+  = f.input :city,          label: '市区町村', required: true
+  = f.input :street,        label: '番地',     required: true
+  = f.input :phone_number,  label: '電話番号', required: true
+  = f.button :submit, '保存'
