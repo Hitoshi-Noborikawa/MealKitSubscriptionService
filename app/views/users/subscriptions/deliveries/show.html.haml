@@ -6,17 +6,17 @@
     .card-body
       %dl.row.mb-4
         %dt.col-sm-3.text-muted 配送日
-        %dd.col-sm-9= l(@delivery.delivery_date, format: :long)
+        %dd.col-sm-9= l @delivery.delivery_date
 
         %dt.col-sm-3.text-muted 時間帯
-        %dd.col-sm-9= @delivery.time_slot
+        %dd.col-sm-9= @delivery.time_slot_text
 
         %dt.col-sm-3.text-muted 配送先
         %dd.col-sm-9= @delivery.address.full_address
 
-        %dt.col-sm-3.text-muted 状態
+        %dt.col-sm-3.text-muted 配送状況
         %dd.col-sm-9
-          %span.badge.bg-info= @delivery.status.humanize
+          %span.badge.bg-info= @delivery.status_text
 
       %h5.mt-4.mb-3 料金
       %table.table.table-sm.w-auto

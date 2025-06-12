@@ -10,6 +10,7 @@ class Delivery < ApplicationRecord
 
   # TOOD: predicates: trueいる？
   enumerize :time_slot, in: { am: 0, pm: 1 }, default: :am, predicates: true
+  # TODO: 完了が欲しい
   enumerize :status, in: { preparing: 0, shipped: 1 }, default: :preparing, predicates: true
 
   # TODO: 命名

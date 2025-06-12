@@ -28,14 +28,14 @@
               - @deliveries.each do |d|
                 %tr
                   %td= l d.delivery_date
-                  %td= d.time_slot
+                  %td= d.time_slot_text
                   %td
                     - d.meal_sets.each do |ms|
                       %span.badge.bg-success.me-1= ms.name
-                  %td.fw-bold.text-center
+                  %td.fw-bold
                     = d.delivery_meal_sets.map(&:quantity).sum
                   %td
-                    %span.badge{class: delivery_status_badge_class(d.status)}= d.status.humanize
+                    %span.badge{class: delivery_status_badge_class(d.status)}= d.status_text
                   %td
                     = link_to '詳細', users_subscription_delivery_path(d), class: 'btn btn-outline-primary btn-sm'
 

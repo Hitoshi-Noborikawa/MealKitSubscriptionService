@@ -56,6 +56,9 @@ ja:
     time_slot:
       am: 午前
       pm: 午後
+    status:
+      preparing: 準備中
+      shipped: 配送中
   errors:
     format: "%{attribute}%{message}"
     messages:
