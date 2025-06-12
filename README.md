@@ -3,81 +3,175 @@
 ER
 ``` mermaid
 erDiagram
-    users {
-        int id PK
+    %% --------------------------------------------------------
+    %% Entity-Relationship Diagram
+    %% --------------------------------------------------------
+
+    %% table name: active_storage_attachments
+    ActiveStorage--Attachment{
+        integer id PK
         string name
+        string record_type
+        integer record_id
+        integer blob_id FK
+        datetime created_at
     }
-    addresses {
-        int id PK
+
+    %% table name: active_storage_blobs
+    ActiveStorage--Blob{
+        integer id PK
+        string key
+        string filename
+        string content_type
+        text metadata
+        string service_name
+        integer byte_size
+        string checksum
+        datetime created_at
+    }
+
+    %% table name: active_storage_variant_records
+    ActiveStorage--VariantRecord{
+        integer id PK
+        integer blob_id FK
+        string variation_digest
+    }
+
+    %% table name: addresses
+    Address{
+        integer id PK
+        integer user_id FK
         string postal_code
         string prefecture
         string city
         string street
         string phone_number
-        int user_id FK
+        datetime created_at
+        datetime updated_at
     }
-    meals {
-        int id PK
-        string name
-        boolean frozen
-    }
-    meal_sets {
-        int id PK
-        string name
-        text description
-    }
-    meal_set_items {
-        int id PK
-        int meal_set_id FK
-        int meal_id FK
-        int quantity
-    }
-    plans {
-        int id PK
-        string name
-        int price
-        int max_meal_set_count
-        text description
-    }
-    subscriptions {
-        int id PK
-        int user_id FK
-        int plan_id FK
-        int address_id FK
-        int frequency
-        date start_date
-    }
-    subscription_meal_sets {
-        int id PK
-        int subscription_id "FK meal_set_idとunique"
-        int meal_set_id "FK subscription_idとunique"
-    }
-    deliveries {
-        int id PK
-        int subscription_id FK
-        int address_id FK
-        date delivery_date
-        int time_slot "morning afternoon"
-        int shipping_fee
-        int frozen_fee
-        int cod_fee "代金引換手数料"
-        int total_price
-        int status "waiting shipped received"
-    }
-    admins {
-        int id PK
+
+    %% table name: admins
+    Admin{
+        integer id PK
         string email
+        string encrypted_password
+        datetime remember_created_at
+        datetime created_at
+        datetime updated_at
     }
 
-    users ||--o{ addresses : has_many
-    users ||--|| subscriptions : has_one
-    plans ||--o{ subscriptions : "has_many"
-    addresses ||--o{ subscriptions : has_many
-    subscriptions ||--o{ subscription_meal_sets : has_many
-    meal_sets ||--o{ subscription_meal_sets : has_many
-    subscriptions ||--o{ deliveries : has_many
-    addresses ||--o{ deliveries : has_many
-    meal_sets ||--o{ meal_set_items : has_many
-    meals ||--o{ meal_set_items : has_many
+    %% table name: deliveries
+    Delivery{
+        integer id PK
+        integer subscription_id FK
+        date delivery_date
+        integer time_slot
+        integer status
+        text delivery_memo
+        integer total_price
+        integer total_price_with_tax
+        datetime created_at
+        datetime updated_at
+        integer address_id FK
+        integer shipping_fee
+        integer frozen_fee
+        integer cod_fee
+        integer schedule_fee
+    }
 
+    %% table name: delivery_meal_sets
+    DeliveryMealSet{
+        integer id PK
+        integer delivery_id FK
+        integer meal_set_id FK
+        datetime created_at
+        datetime updated_at
+        integer quantity
+    }
+
+    %% table name: meals
+    Meal{
+        integer id PK
+        string name
+        boolean refrigeration
+        datetime created_at
+        datetime updated_at
+    }
+
+    %% table name: meal_sets
+    MealSet{
+        integer id PK
+        string name
+        datetime created_at
+        datetime updated_at
+        text description
+    }
+
+    %% table name: meal_set_items
+    MealSetItem{
+        integer id PK
+        integer meal_set_id FK
+        integer meal_id FK
+        integer quantity
+        datetime created_at
+        datetime updated_at
+    }
+
+    %% table name: plans
+    Plan{
+        integer id PK
+        string name
+        integer price
+        integer meal_sets_count
+        datetime created_at
+        datetime updated_at
+    }
+
+    %% table name: subscriptions
+    Subscription{
+        integer id PK
+        integer user_id FK
+        integer plan_id FK
+        integer frequency
+        boolean active
+        datetime paused_at
+        datetime created_at
+        datetime updated_at
+    }
+
+    %% table name: users
+    User{
+        integer id PK
+        string name
+        string email
+        string encrypted_password
+        string reset_password_token
+        datetime reset_password_sent_at
+        datetime remember_created_at
+        datetime created_at
+        datetime updated_at
+        string phone_number
+        text allergy_notes
+        boolean suspended
+    }
+
+    ActiveStorage--Attachment }o--|| Record : "BT:record"
+    ActiveStorage--Attachment |o--|| ActiveStorage--Blob : "BT:blob, HO:preview_image_attachment"
+    ActiveStorage--Blob ||--o{ Attachment : "HM:attachments"
+    ActiveStorage--Blob ||--o{ ActiveStorage--VariantRecord : "HM:variant_records"
+    ActiveStorage--Blob }o..o| ActiveStorage--Blob : "HOT:preview_image_blob"
+    ActiveStorage--VariantRecord }o--|| Blob : "BT:blob"
+    ActiveStorage--VariantRecord ||--o| ActiveStorage--Attachment : "HO:image_attachment"
+    ActiveStorage--VariantRecord }o..o| ActiveStorage--Blob : "HOT:image_blob"
+    Address }o--|| User : "BT:user, HM:addresses"
+    Delivery ||--o{ DeliveryMealSet : "HM:delivery_meal_sets, BT:delivery"
+    Delivery }o..o{ MealSet : "HMT:meal_sets, HMT:deliveries"
+    Delivery }o--|| Subscription : "BT:subscription, HM:deliveries"
+    Delivery }o--|| Address : "BT:address"
+    DeliveryMealSet }o--|| MealSet : "BT:meal_set, HM:delivery_meal_sets"
+    Meal ||--o{ MealSetItem : "HM:meal_set_items, BT:meal"
+    MealSet ||--o{ MealSetItem : "HM:meal_set_items, BT:meal_set"
+    MealSet }o..o{ Meal : "HMT:meals"
+    Plan ||--o{ Subscription : "HM:subscriptions, BT:plan"
+    Subscription |o--|| User : "BT:user, HO:subscription"
 ```
