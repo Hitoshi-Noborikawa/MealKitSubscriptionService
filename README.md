@@ -7,36 +7,6 @@ erDiagram
     %% Entity-Relationship Diagram
     %% --------------------------------------------------------
 
-    %% table name: active_storage_attachments
-    ActiveStorage--Attachment{
-        integer id PK
-        string name
-        string record_type
-        integer record_id
-        integer blob_id FK
-        datetime created_at
-    }
-
-    %% table name: active_storage_blobs
-    ActiveStorage--Blob{
-        integer id PK
-        string key
-        string filename
-        string content_type
-        text metadata
-        string service_name
-        integer byte_size
-        string checksum
-        datetime created_at
-    }
-
-    %% table name: active_storage_variant_records
-    ActiveStorage--VariantRecord{
-        integer id PK
-        integer blob_id FK
-        string variation_digest
-    }
-
     %% table name: addresses
     Address{
         integer id PK
@@ -155,14 +125,6 @@ erDiagram
         boolean suspended
     }
 
-    ActiveStorage--Attachment }o--|| Record : "BT:record"
-    ActiveStorage--Attachment |o--|| ActiveStorage--Blob : "BT:blob, HO:preview_image_attachment"
-    ActiveStorage--Blob ||--o{ Attachment : "HM:attachments"
-    ActiveStorage--Blob ||--o{ ActiveStorage--VariantRecord : "HM:variant_records"
-    ActiveStorage--Blob }o..o| ActiveStorage--Blob : "HOT:preview_image_blob"
-    ActiveStorage--VariantRecord }o--|| Blob : "BT:blob"
-    ActiveStorage--VariantRecord ||--o| ActiveStorage--Attachment : "HO:image_attachment"
-    ActiveStorage--VariantRecord }o..o| ActiveStorage--Blob : "HOT:image_blob"
     Address }o--|| User : "BT:user, HM:addresses"
     Delivery ||--o{ DeliveryMealSet : "HM:delivery_meal_sets, BT:delivery"
     Delivery }o..o{ MealSet : "HMT:meal_sets, HMT:deliveries"
