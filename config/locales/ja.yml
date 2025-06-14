@@ -44,6 +44,7 @@ ja:
       meal_set:
         name: セット名
         description: 説明
+        thumbnail: 食材セット画像
       meal_set_item:
         quantity: 個数
       subscription:
@@ -57,8 +58,9 @@ ja:
       am: 午前
       pm: 午後
     status:
-      preparing: 準備中
+      preparing: 配送準備中
       shipped: 配送中
+      delivered: 配送完了
   errors:
     format: "%{attribute}%{message}"
     messages:

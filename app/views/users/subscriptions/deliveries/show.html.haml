@@ -16,7 +16,8 @@
 
         %dt.col-sm-3.text-muted 配送状況
         %dd.col-sm-9
-          %span.badge.bg-info= @delivery.status_text
+          %span.badge{ class: delivery_status_badge_class(@delivery.status) }
+            = @delivery.status_text
 
       %h5.mt-4.mb-3 料金
       %table.table.table-sm.w-auto

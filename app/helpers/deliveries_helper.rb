@@ -1,14 +1,11 @@
 module DeliveriesHelper
   def delivery_status_badge_class(status)
-    case status.to_s
-    when 'delivered'
-      'bg-primary'
-    when 'shipping'
-      'bg-warning text-dark'
-    when 'pending'
+    if status.preparing?
       'bg-secondary'
-    else
-      'bg-light text-dark'
+    elsif status.shipped?
+      'bg-warning text-dark'
+    elsif status.delivered?
+      'bg-primary'
     end
   end
 end
