@@ -6,7 +6,7 @@
   .col-md-6
     %label.fw-bold.mb-2 プランを選択してください
     = f.input :plan_id,
-        collection: Plan.all.map { |p| ["#{p.name}（¥#{p.price}）", p.id] },
+        collection: Plan.default_order.map { |p| ["#{p.name}（¥#{p.price}）", p.id] },
         as: :radio_buttons,
         item_wrapper_class: 'form-check mb-2',
         input_html: { class: 'form-check-input' },

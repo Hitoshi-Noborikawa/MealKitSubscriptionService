@@ -54,6 +54,7 @@ class Admins::MealSetsController < Admins::ApplicationController
     params.require(:meal_set).permit(
       :name,
       :description,
+      :thumbnail,
       meal_set_items_attributes: %i[id meal_id quantity _destroy]
     )
   end
