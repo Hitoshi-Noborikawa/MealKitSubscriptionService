@@ -25,7 +25,7 @@ gem 'turbo-rails'
 
 group :development, :test do
   gem 'brakeman', require: false
-  gem 'debug', platforms: %i[mri windows], require: 'debug/prelude'
+  gem 'debug', require: 'debug/prelude'
   gem 'rspec-rails'
 end
 
