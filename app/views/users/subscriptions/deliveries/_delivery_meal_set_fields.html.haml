@@ -1,0 +1,15 @@
+.nested-fields.row.mb-2.align-items-center
+  .col-md-8
+    = f.input :meal_set_id,
+      collection: MealSet.default_order,
+      selected: MealSet.default_order.first,
+      prompt: 'セットを選択',
+      label: false,
+      input_html: { class: 'form-select' }
+  .col-md-3
+    = f.input :quantity,
+      label: false,
+      input_html: { min: 1, max: subscription.plan.meal_sets_count, class: 'form-control' }
+  .col-md-1
+    %button.btn.btn-outline-danger.btn-sm.remove-field{ type: "button", data: { action: "click->nested-form#removeField" } }
+      削除

@@ -22,7 +22,6 @@ class Users::Subscriptions::DeliveriesController < Users::Subscriptions::Applica
   def create
     @delivery = @subscription.deliveries.build(delivery_params)
     if @delivery.save
-      # 次回配送日を更新するロジックなど
       redirect_to users_root_path, notice: '配送を作成しました'
     else
       render :new, status: :unprocessable_entity
@@ -45,8 +44,8 @@ class Users::Subscriptions::DeliveriesController < Users::Subscriptions::Applica
 
   def delivery_params
     params.require(:delivery).permit(
-      :delivery_date, :time_slot, :address_id, :time_slot,
-      delivery_meal_sets_attributes: %i[id meal_set_id _destroy]
+      :delivery_date, :time_slot, :address_id,
+      delivery_meal_sets_attributes: %i[id meal_set_id quantity _destroy]
     )
   end
 end

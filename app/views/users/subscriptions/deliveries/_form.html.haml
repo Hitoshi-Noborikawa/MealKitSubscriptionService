@@ -1,4 +1,5 @@
 = simple_form_for [:users, subscription, delivery] do |f|
+  = f.error_notification
   .row.mb-3
     .col-md-6
       = f.input :delivery_date,
@@ -22,30 +23,27 @@
         value_method: :id,
         prompt: '配送先を選択',
         label: '配送先',
+        selected: current_user.addresses.first,
         input_html: { class: 'form-select' }
 
-  .border-top.pt-4.mt-4
-    %h5.mb-3.text-primary
-      %i.bi.bi-basket.me-2
-      食材セットを選択（最大 #{subscription.plan.meal_sets_count} 個）
+    .border-top.pt-4.mt-4
+      %h5.mb-3.text-primary
+        %i.bi.bi-basket.me-2
+        食材セットを選択（最大 #{subscription.plan.meal_sets_count} 個）
 
-    = f.simple_fields_for :delivery_meal_sets do |ff|
-      .row.mb-2.align-items-end
-        .col-md-8
-          = ff.input :meal_set_id,
-            collection: MealSet.all,
-            prompt: 'セットを選択',
-            label: false,
-            input_html: { class: 'form-select' }
-        .col-md-3
-          = ff.input :quantity,
-            label: '個数',
-            input_html: { min: 1, max: subscription.plan.meal_sets_count, class: 'form-control' }
-        .col-md-1
-          -# = ff.input :_destroy, as: :boolean, label: '削除'
+      .nested-form-wrapper{ data: { controller: "nested-form" } }
+        .nested-fields-wrapper
+          - f.object.delivery_meal_sets.each_with_index do |delivery_meal_set, i|
+            = f.simple_fields_for :delivery_meal_sets, delivery_meal_set do |ff|
+              = render 'delivery_meal_set_fields', f: ff, subscription: subscription
 
-    .d-flex.justify-content-end.mb-2
-      -# = link_to_add_fields '行を追加', f, :delivery_meal_sets, class: 'btn btn-outline-secondary btn-sm'
+        %div#delivery-meal-set-template{ style: "display:none" }
+          = f.simple_fields_for(:delivery_meal_sets, DeliveryMealSet.new, child_index: "NEW_RECORD") do |ff|
+            = render 'delivery_meal_set_fields', f: ff, subscription: subscription
 
-  .d-flex.justify-content-end.mt-4
-    = f.button :submit, '確定', class: 'btn btn-primary px-4 py-2'
+        .d-flex.justify-content-start.mb-2
+          %button.btn.btn-outline-secondary.btn-sm{ type: "button", data: { action: "click->nested-form#addField" } }
+            食材セットを追加
+
+  .d-flex.justify-content-start.mt-4.mb-4
+    = f.button :submit, '確定', class: 'btn btn-primary'

@@ -14,6 +14,8 @@ class Delivery < ApplicationRecord
 
   # TODO: 命名
   before_validation :assign_fees_and_total
+  validate :meal_sets_count_within_limit
+  validate :delivery_date_matches_frequency
 
   scope :default_order, -> { order(delivery_date: :asc) }
 
@@ -45,5 +47,27 @@ class Delivery < ApplicationRecord
 
     # 合計金額を算出
     self.total_price = base + shipping_fee + frozen_fee + cod_fee + schedule_fee
+  end
+
+  def meal_sets_count_within_limit
+    # NOTE: _destroyがtrueなものは除外 https://railsguides.jp/active_record_validations.html
+    valid_meal_sets = delivery_meal_sets.reject { |dms| dms.marked_for_destruction? }
+    max_count = subscription.plan.meal_sets_count || 1
+    if valid_meal_sets.size > max_count
+      errors.add(:base, "食材セットは最大#{max}個まで選択できます")
+    end
+  end
+
+  def delivery_date_matches_frequency
+    return if delivery_date.blank? || subscription.blank?
+
+    case subscription.frequency
+    when 'weekly'
+      errors.add(:delivery_date, 'は週1コースの曜日のみ指定できます') unless delivery_date.sunday?
+    when 'twice_a_month'
+      unless [5, 20].include?(delivery_date.day)
+        errors.add(:delivery_date, 'は月2コースの指定日のみ選択できます')
+      end
+    end
   end
 end

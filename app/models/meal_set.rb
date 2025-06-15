@@ -12,4 +12,6 @@ class MealSet < ApplicationRecord
 
   validates :name, presence: true
   validates :thumbnail, blob: { content_type: ['image/png', 'image/jpg', 'image/jpeg'], size_range: 1..(20.megabytes) }
+
+  scope :default_order, -> { order(:id, :name) }
 end
