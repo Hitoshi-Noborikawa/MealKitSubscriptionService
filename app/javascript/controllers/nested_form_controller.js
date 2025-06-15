@@ -6,6 +6,12 @@ export default class extends Controller {
     this.wrapper = this.element.querySelector('.nested-fields-wrapper');
     this.template = this.element.querySelector('#delivery-meal-set-template').innerHTML;
     this.index = this.wrapper.querySelectorAll('.nested-fields').length;
+
+    // form submit時にNEW_RECORD行を除去
+    const form = this.element.closest('form');
+    if (form) {
+      form.addEventListener('submit', this.removeNewRecordFields.bind(this));
+    }
   }
 
   addField(event) {
@@ -19,5 +25,14 @@ export default class extends Controller {
     event.preventDefault();
     const field = event.target.closest('.nested-fields');
     if (field) field.remove();
+  }
+
+  // ★追加：NEW_RECORD行を除去
+  removeNewRecordFields(event) {
+    const newRecordFields = this.wrapper.querySelectorAll('[name*="NEW_RECORD"]');
+    newRecordFields.forEach(input => {
+      const field = input.closest('.nested-fields');
+      if (field) field.remove();
+    });
   }
 }

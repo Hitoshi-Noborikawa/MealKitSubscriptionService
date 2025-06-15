@@ -50,6 +50,8 @@ ja:
       subscription:
         frequency: 配送頻度
         plan_id: プラン
+      delivery:
+        delivery_date: 配送日
       delivery_meal_set:
         quantity: 個数
   enumerize:

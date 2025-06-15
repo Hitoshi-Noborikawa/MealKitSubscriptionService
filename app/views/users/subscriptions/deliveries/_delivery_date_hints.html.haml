@@ -1,0 +1,5 @@
+- next_date = next_available_delivery_date(subscription)
+- if next_date > Date.current
+  %div.text-primary.mt-1
+    %i.bi.bi-calendar-check.me-1
+    次に選べる配送日: #{next_date.strftime('%Y/%m/%d')} 以降

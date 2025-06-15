@@ -31,9 +31,6 @@
           %tr
             %th 代引手数料
             %td.text-end= number_with_delimiter(@delivery.cod_fee) + " 円"
-          %tr
-            %th スケジュール手数料
-            %td.text-end= number_with_delimiter(@delivery.schedule_fee) + " 円"
           %tr.fw-bold
             %th 合計
             %td.text-end= number_with_delimiter(@delivery.total_price) + " 円"

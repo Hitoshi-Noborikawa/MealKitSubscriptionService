@@ -15,7 +15,7 @@ class Delivery < ApplicationRecord
   # TODO: 命名
   before_validation :assign_fees_and_total
   validate :meal_sets_count_within_limit
-  validate :delivery_date_matches_frequency
+  validate :delivery_date_interval_valid
 
   scope :default_order, -> { order(delivery_date: :asc) }
 
@@ -38,12 +38,8 @@ class Delivery < ApplicationRecord
     # 代引き手数料を固定で設定
     self.cod_fee = 300
 
-    # スケジュール手数料
-    self.schedule_fee = subscription.frequency.twice_a_month? ? 500 : 0
-
     # 基本料金は「プラン価格 × 選択セット数」
-    total_sets = delivery_meal_sets.sum(&:quantity)
-    base = subscription.plan.price * total_sets
+    base = subscription.plan.price
 
     # 合計金額を算出
     self.total_price = base + shipping_fee + frozen_fee + cod_fee + schedule_fee
@@ -51,22 +47,30 @@ class Delivery < ApplicationRecord
 
   def meal_sets_count_within_limit
     # NOTE: _destroyがtrueなものは除外 https://railsguides.jp/active_record_validations.html
-    valid_meal_sets = delivery_meal_sets.reject { |dms| dms.marked_for_destruction? }
-    max_count = subscription.plan.meal_sets_count || 1
-    if valid_meal_sets.size > max_count
-      errors.add(:base, "食材セットは最大#{max}個まで選択できます")
+    valid_meal_sets = delivery_meal_sets.reject(&:marked_for_destruction?)
+    max_count = subscription&.plan&.meal_sets_count || 1
+
+    # TODO: 個数が足りない場合も制御する
+    if valid_meal_sets.sum(&:quantity) > max_count
+      errors.add(:base, "食材セットは最大#{max_count}個まで選択できます")
     end
   end
 
-  def delivery_date_matches_frequency
+  def delivery_date_interval_valid
     return if delivery_date.blank? || subscription.blank?
+
+    # 最後の配送を取得
+    last_delivery = subscription.deliveries.where.not(id: self.id).order(delivery_date: :desc).first
+    return unless last_delivery
 
     case subscription.frequency
     when 'weekly'
-      errors.add(:delivery_date, 'は週1コースの曜日のみ指定できます') unless delivery_date.sunday?
+      if (delivery_date - last_delivery.delivery_date).to_i < 7
+        errors.add(:delivery_date, 'は前回配送から7日以上空けて選択してください')
+      end
     when 'twice_a_month'
-      unless [5, 20].include?(delivery_date.day)
-        errors.add(:delivery_date, 'は月2コースの指定日のみ選択できます')
+      if (delivery_date - last_delivery.delivery_date).to_i < 15
+        errors.add(:delivery_date, 'は前回配送から15日以上空けて選択してください')
       end
     end
   end

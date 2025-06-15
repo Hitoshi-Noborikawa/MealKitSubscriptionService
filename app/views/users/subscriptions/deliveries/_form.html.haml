@@ -6,6 +6,7 @@
         as: :string,
         input_html: { type: 'date', value: Date.current, class: 'form-control' },
         label: '配送日'
+      = render "delivery_date_hints", subscription: subscription
     .col-md-6
       = f.input :time_slot,
         as: :radio_buttons,
@@ -15,7 +16,6 @@
         input_html: { class: 'form-check-input' },
         label_html: { class: 'form-check-label' },
         wrapper: false
-
   .mb-3
     = f.input :address_id,
         collection: current_user.addresses,
