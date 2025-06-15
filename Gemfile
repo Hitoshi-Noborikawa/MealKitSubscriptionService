@@ -22,7 +22,6 @@ gem 'solid_queue'
 gem 'stimulus-rails'
 gem 'thruster', require: false
 gem 'turbo-rails'
-gem 'tzinfo-data', platforms: %i[windows jruby]
 
 group :development, :test do
   gem 'brakeman', require: false
