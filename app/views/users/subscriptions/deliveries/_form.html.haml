@@ -8,14 +8,11 @@
         label: '配送日'
       = render "delivery_date_hints", subscription: subscription
     .col-md-6
-      = f.input :time_slot,
-        as: :radio_buttons,
-        collection: Delivery.time_slot.options,
-        label: '時間帯',
-        item_wrapper_class: 'form-check mb-2',
-        input_html: { class: 'form-check-input' },
-        label_html: { class: 'form-check-label' },
-        wrapper: false
+      %label.fw-bold.mb-2 時間帯
+      - Delivery.time_slot.options.each do |text, value|
+        .form-check.mb-2
+          = f.radio_button :time_slot, value, class: 'form-check-input', id: "delivery_time_slot_#{value}"
+          = f.label :time_slot, text, value: value, class: 'form-check-label', for: "delivery_time_slot_#{value}"
   .mb-3
     = f.input :address_id,
         collection: current_user.addresses,

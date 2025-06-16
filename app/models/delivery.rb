@@ -29,9 +29,15 @@ class Delivery < ApplicationRecord
                         else
                           500
                         end
-    # 冷凍品追加料金を計算(選択したセット内の合計冷凍品数 × 100円)
-    frozen_items_count = meal_sets.sum do |ms|
-      ms.meal_set_items.count { |item| item.meal.frozen? }
+    frozen_items_count = delivery_meal_sets.reject(&:marked_for_destruction?).sum do |dms|
+      ms = dms.meal_set || MealSet.find_by(id: dms.meal_set_id)
+      next 0 unless ms
+
+      ms.meal_set_items.to_a.sum do |item|
+        meal = item.meal || Meal.find_by(id: item.meal_id)
+        next 0 unless meal&.refrigeration?
+        item.quantity.to_i * dms.quantity.to_i
+      end
     end
     self.frozen_fee = frozen_items_count * 100
 

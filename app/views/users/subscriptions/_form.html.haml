@@ -5,23 +5,16 @@
 .row.mb-4
   .col-md-6
     %label.fw-bold.mb-2 プランを選択してください
-    = f.input :plan_id,
-        collection: Plan.default_order.map { |p| ["#{p.name}（¥#{p.price}）", p.id] },
-        as: :radio_buttons,
-        item_wrapper_class: 'form-check mb-2',
-        input_html: { class: 'form-check-input' },
-        label_html: { class: 'form-check-label' },
-        wrapper: false,
-        label: false
+    - Plan.default_order.each do |plan|
+      .form-check.mb-2
+        = f.radio_button :plan_id, plan.id, class: 'form-check-input', id: "plan_id_#{plan.id}"
+        = f.label :plan_id, "#{plan.name}（¥#{plan.price}）", value: plan.id, class: 'form-check-label', for: "plan_id_#{plan.id}"
   .col-md-6
     %label.fw-bold.mb-2 配送頻度を選択してください
-    = f.input :frequency,
-        as: :radio_buttons,
-        collection: Subscription.frequency.options,
-        item_wrapper_class: 'form-check mb-2',
-        input_html: { class: 'form-check-input' },
-        label_html: { class: 'form-check-label' },
-        wrapper: false
+    - Subscription.frequency.options.each do |text, value|
+      .form-check.mb-2
+        = f.radio_button :frequency, value, class: 'form-check-input', id: "subscription_frequency_#{value}"
+        = f.label :frequency, text, value: value, class: 'form-check-label', for: "subscription_frequency_#{value}"
 
 .mt-4.d-flex.justify-content-end
   = f.button :submit, class: 'btn btn-primary px-4 py-2'

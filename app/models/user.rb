@@ -4,6 +4,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  # TODO: has_manyで複数契約できるようにしたい
   has_one :subscription, dependent: :destroy
   has_many :addresses, dependent: :destroy
 

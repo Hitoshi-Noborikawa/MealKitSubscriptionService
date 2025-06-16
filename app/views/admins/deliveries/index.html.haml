@@ -1,29 +1,34 @@
-%h2 配送一覧
-%table.table.table-hover
-  %thead
-    %tr
-      %th ID
-      %th 配送日
-      %th 食材セット
-      %th 状態
-      %th 操作
-  %tbody
-    - @deliveries.each do |d|
+.container.mt-5
+  %h2 全配送一覧
+
+  %table.table.table-hover.align-middle
+    %thead
       %tr
-        %td= d.id
-        %td= d.delivery_date
-        %td
-          - d.meal_sets.each do |ms|
-            = ms.name
-            = tag(:br)
-        %td
-          = d.status
-        %td
-          = simple_form_for d, url: admins_delivery_path(d), method: :patch, local: true do |f|
-            .d-flex.align-items-center
-              = f.input :status,
-                        as: :select,
-                        collection: Delivery.status.options,
-                        label: false,
-                        input_html: { class: 'form-select form-select-sm me-2' }
-              = f.button :submit, '変更', class: 'btn btn-primary btn-sm'
+        %th 配送ID
+        %th ユーザー情報
+        %th 配送日
+        %th 食材セット
+        %th 配送状況
+    %tbody
+      - @deliveries.each do |d|
+        %tr
+          %td= d.id
+          %td
+            %div
+              %strong= d.subscription.user.name
+            .text-muted.small= d.subscription.user.email
+          %td= d.delivery_date.strftime('%Y/%m/%d')
+          %td
+            - d.meal_sets.each do |ms|
+              = ms.name
+              = tag(:br)
+          %td
+            = simple_form_for d, url: admins_delivery_path(d), method: :patch, local: true do |f|
+              .d-flex.align-items-center.gap-2
+                = f.input :status,
+                          as: :select,
+                          collection: Delivery.status.options,
+                          label: false,
+                          input_html: { class: 'form-select form-select-sm' },
+                          wrapper_html: { style: 'margin-bottom: 0 !important;' }
+                = f.button :submit, '変更', class: 'btn btn-primary btn-sm'
