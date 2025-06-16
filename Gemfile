@@ -9,7 +9,6 @@ gem 'devise'
 gem 'enumerize'
 gem 'haml-rails'
 gem 'image_processing'
-gem 'jbuilder'
 gem 'jsbundling-rails'
 gem 'kamal', require: false
 gem 'pg'
