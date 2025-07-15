@@ -24,19 +24,19 @@
         %tbody
           %tr
             %th プラン料
-            %td.text-end= number_with_delimiter(@delivery.subscription.plan.price) + " 円"
+            %td.text-end= number_with_delimiter(@delivery.subscription.plan.price) + ' 円'
           %tr
             %th 送料
-            %td.text-end= number_with_delimiter(@delivery.shipping_fee) + " 円"
+            %td.text-end= number_with_delimiter(@delivery.shipping_fee) + ' 円'
           %tr
             %th 冷凍手数料
-            %td.text-end= number_with_delimiter(@delivery.frozen_fee) + " 円"
+            %td.text-end= number_with_delimiter(@delivery.frozen_fee) + ' 円'
           %tr
             %th 代引手数料
-            %td.text-end= number_with_delimiter(@delivery.cod_fee) + " 円"
+            %td.text-end= number_with_delimiter(@delivery.cod_fee) + ' 円'
           %tr.fw-bold
             %th 合計
-            %td.text-end= number_with_delimiter(@delivery.total_price) + " 円"
+            %td.text-end= number_with_delimiter(@delivery.total_price) + ' 円'
 
       %h5.mt-4.mb-2 食材セット
       %ul.list-inline
