@@ -26,19 +26,19 @@
                 %th 配送状況
                 %th
             %tbody
-              - @deliveries.each do |d|
+              - @deliveries.each do |delivery|
                 %tr
-                  %td= l d.delivery_date
-                  %td= d.time_slot_text
+                  %td= l delivery.delivery_date
+                  %td= delivery.time_slot_text
                   %td
-                    - d.meal_sets.each do |ms|
-                      %span.badge.bg-success.me-1= ms.name
+                    - delivery.meal_sets.each do |meal_set|
+                      %span.badge.bg-success.me-1= meal_set.name
                   %td.fw-bold
-                    = d.delivery_meal_sets.map(&:quantity).sum
+                    = delivery.delivery_meal_sets.map(&:quantity).sum
                   %td
-                    %span.badge{class: delivery_status_badge_class(d.status)}= d.status_text
+                    %span.badge{class: delivery_status_badge_class(delivery.status)}= delivery.status_text
                   %td
-                    = link_to '詳細', users_subscription_delivery_path(d), class: 'btn btn-link'
+                    = link_to '詳細', users_subscription_delivery_path(delivery), class: 'btn btn-link'
 
     - else
       .alert.alert-info.mt-4 まだ配送注文がありません。
